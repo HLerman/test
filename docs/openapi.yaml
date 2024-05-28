@@ -1,0 +1,122 @@
+openapi: 3.1.0
+info:
+  title: Jump API
+  version: 1.0.0
+paths:
+  /users:
+    get:
+      summary: Get a list of users
+      description: Retrieve a list of user objects
+      responses:
+        '200':
+          description: A JSON array of users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserArray'
+  /invoice:
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Invoice'
+      responses:
+        '204':
+          description: "Succès"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+  /transaction:
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+      responses:
+        '204':
+          description: "Succès"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '404':
+          description: "Aucune facture trouvée"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '400':
+          description: "Montant de la transaction ne correspond pas au montant de la facture"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: "Facture déjà payée"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        user_id: 
+          type: integer
+        first_name:
+          type: string
+        last_name:
+          type: string
+        balance:
+          type: number
+          format: double
+      required:
+        - user_id
+        - first_name
+        - last_name
+        - balance
+    UserArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/User'
+    Invoice:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        amount:
+          type: number
+          format: double
+        label:
+          type: string
+      required:
+        - user_id
+        - amount
+        - label
+    Transaction:
+      type: object
+      properties:
+        invoice_id:
+          type: integer
+        amount:
+          type: number
+          format: double
+        reference:
+          type: string
+      required:
+        - invoice_id
+        - amount
+        - reference
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message

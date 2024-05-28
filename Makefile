@@ -1,0 +1,1 @@
+oapi-codegen -package=api -generate "types" docs/openapi.yaml > models.gen.go
