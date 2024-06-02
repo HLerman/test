@@ -25,10 +25,6 @@ paths:
       responses:
         '204':
           description: "Succès"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Invoice'
   /transaction:
     post:
       requestBody:
@@ -40,10 +36,6 @@ paths:
       responses:
         '204':
           description: "Succès"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Transaction'
         '404':
           description: "Aucune facture trouvée"
           content:
